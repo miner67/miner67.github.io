@@ -27,6 +27,22 @@ $(document).ready(function () {
   NexT.utils.embeddedVideoTransformer();
   NexT.utils.addActiveClassToMenuItem();
 
+  var OriginTitile=document.title;
+  var st;
+  document.addEventListener('visibilitychange',function(){
+	if(document.hidden){
+		document.title="(�ĥ�?)�Ҳغ���Ŷ";
+		clearTimeout(st);
+		console.log('hide');
+	}else{
+		document.title='(*��?��*) ���㷢����~ '+OriginTitile;
+		console.log('show');
+		st=setTimeout(function(){
+		document.title=OriginTitile;
+		},4000);
+		console.log('endChange=');
+		}
+	});
 
   // Define Motion Sequence.
   NexT.motion.integrator
