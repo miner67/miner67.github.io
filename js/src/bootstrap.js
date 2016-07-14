@@ -31,11 +31,11 @@ $(document).ready(function () {
   var st;
   document.addEventListener('visibilitychange',function(){
 	if(document.hidden){
-		document.title="(�ĥ�?)�Ҳغ���Ŷ";
+		document.title="(つェ⊂)我藏好了哦";
 		clearTimeout(st);
 		console.log('hide');
 	}else{
-		document.title='(*��?��*) ���㷢����~ '+OriginTitile;
+		document.title='(*´∇｀*) 被你发现啦~ '+OriginTitile;
 		console.log('show');
 		st=setTimeout(function(){
 		document.title=OriginTitile;
