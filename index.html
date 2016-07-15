@@ -332,6 +332,24 @@
           
             <h1 id="ida初学—使用遇到的问题总结"><a href="#ida初学—使用遇到的问题总结" class="headerlink" title="ida初学—使用遇到的问题总结"></a>ida初学—使用遇到的问题总结</h1><p>总结目前我使用ida的动态调试的情景大致分为3种。</p>
 <p>第一种目前只有在叫非虫大大的书中使用到，即针对Android原生程序进行调试。采用ida的远程运行方式进行调试。在设置完ida的必要环境，（Android_server等），启动IDA PRO主程序，点击菜单项&quot;Debugger&quot;</p>
+<p> adb shell am start  -D -n {package Name}/{MainActivity Name}</p>
+<p>使用ida附加程序，设定中断在load library处，开始附加。</p>
+<p>命令：jdb  -connect com.sun.jdi.SocketAttach:hostname=127.0.0.1,port=8601</p>
+<p>F9开始进行调试，要事先打好断点。Port的获得需要DMMS monitor的开启，该进程必须为可调试进程或者该rom为可调试rom，否则无法在DMMS中看到相应端口。</p>
+<p>第三种是直接对apk程序的调试，采用的是IDA的远程附加方式。（参考来自于<a href="http://drops.wooyun.org/mobile/5942）。" target="_blank" rel="external">http://drops.wooyun.org/mobile/5942）。</a></p>
+<p>将APP包里的classes.dex解压到任意一目录，然后拖进IDA。等待IDA加载分析完毕，点击Debugger-&gt;Debugger Options如图</p>
+<p> <img src="http://static.wooyun.org//drops/20150625/2015062503181543429.png" alt=""></p>
+<p>按图所示勾选在进程入口挂起，然后点击Set specific options 填入APP包名称和入口activity 如图：</p>
+<p> <img src="http://static.wooyun.org//drops/20150625/2015062503181515204.png" alt=""></p>
+<p>然后在IDA点击Debugger-&gt;Process Options</p>
+<p> <img src="http://static.wooyun.org//drops/20150625/2015062503181522489.png" alt=""></p>
+<p>其他默认不变，端口这里改为8700。这里默认端口是23946，我在这里困扰了很久，就是因为这个端口没有改为8700所致。然后我们看看这个8700端口是怎么来的。在Android SDK里提供了一款工具DDMS，用来监视APP的运行状态和结果。在SDK的TOOLS目录有个DDMS.BAT的脚步，运行后就会启动DDMS。由于我的本机安装了SDK的ADT插件，DDMS集成到了Eclips中，打开Eclips-&gt;Open perspective-&gt;ddms就启动了DDMS。</p>
+<p>在DDMS选中某个进程后面就会注释出它的调试端口,本机这里是8700。</p>
+<p>调试过程中有一个问题出现了很多次，浪费了我大量的时间，就在写文章的时候，操作时还是遇到了这样的问题。就是点击启动后IDA提示can&#39;t bind socket，琢磨了很久终于找到原因了，当打开过一次DDMS后每次启动Eclips都会启动DDMS 而8700端口正是被这个DDMS给占用了，然后每次都会启动失败，解决办法就是虚拟机运行起来后关闭掉Eclips，这时一切就正常了！至此可以正常附加程序。</p>
+<p>目前题目之外的探究有两个，且先记下来。第一个是之前的那道题目不能将dex文件成功封装回apk文件，应该是对安卓的封装机制不了解。可参考以继续研究。<a href="http://www.codemud.net/~thinker/GinGin\_CGI.py/show\_id\_doc/453" target="_blank" rel="external">http://www.codemud.net/~thinker/GinGin\_CGI.py/show\_id\_doc/453</a></p>
+<p>第二个是意外发现可以采用idea进行smali的调试工作，环境配置不甚复杂。可以一试，感受idea这方面的诚意如何。可参考可参考以继续研究。</p>
+<p><a href="http://www.cnblogs.com/lanrenxinxin/p/4891424.html" target="_blank" rel="external">http://www.cnblogs.com/lanrenxinxin/p/4891424.html</a></p>
+<p><a href="http://jaq.alibaba.com/blog.htm?id=52" target="_blank" rel="external">http://jaq.alibaba.com/blog.htm?id=52</a></p>
 
           
         
@@ -778,7 +796,7 @@
           
             <div class="post-gallery-row">
               <a class="post-gallery-img fancybox"
-                 href="http://bruce.u.qiniudn.com/2013/11/27/reading/photos-0.jpg" rel="gallery_ciqncy8v60008oc9zscyekswi"
+                 href="http://bruce.u.qiniudn.com/2013/11/27/reading/photos-0.jpg" rel="gallery_ciqnda9c6000aw29zfsdck5xi"
                  itemscope itemtype="http://schema.org/ImageObject" itemprop="url">
                 <img src="http://bruce.u.qiniudn.com/2013/11/27/reading/photos-0.jpg" itemprop="contentUrl"/>
               </a>
@@ -786,7 +804,7 @@
           
             
               <a class="post-gallery-img fancybox"
-                 href="http://bruce.u.qiniudn.com/2013/11/27/reading/photos-1.jpg" rel="gallery_ciqncy8v60008oc9zscyekswi"
+                 href="http://bruce.u.qiniudn.com/2013/11/27/reading/photos-1.jpg" rel="gallery_ciqnda9c6000aw29zfsdck5xi"
                  itemscope itemtype="http://schema.org/ImageObject" itemprop="url">
                 <img src="http://bruce.u.qiniudn.com/2013/11/27/reading/photos-1.jpg" itemprop="contentUrl"/>
               </a>
